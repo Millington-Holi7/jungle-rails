@@ -1,0 +1,53 @@
+<% if @order.line_items.empty? %>
+<div class="alert alert-info">
+  <p>Your order is currently empty.</p>
+  <%= link_to 'Return to home page', root_path, class: 'btn btn-primary' %>
+</div>
+<% else %>
+  <div class="panel panel-default items">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="2">Product</th>
+          <th>Unit Price</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.line_items.each do |line_item| %>
+          <tr>
+            <td>
+              <%= image_tag line_item.product.image_url, class: 'img-thumbnail' %>
+            </td>
+            <td>
+              <h5><%= line_item.product.name %></h5>
+              <p><%= line_item.product.description %></p>
+            </td>
+            <td>
+               <%= humanized_money_with_symbol line_item.product.price %>
+            </td>
+            <td>
+              <%= line_item.quantity %>
+            </td>
+            <td>
+              <%= humanized_money_with_symbol line_item.product.price %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="4">
+            TOTAL:
+          </th>
+          <th>
+            <%= number_to_currency(@order.total_cents / 100.0) %>
+          </th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+ 
+<% end %>
